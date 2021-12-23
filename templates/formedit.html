@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form view</title>
+</head>
+
+<body>
+    <h1>Form name : {{form}}</h1>
+    <h3>Form created by {{form.createdby}} </h3>
+
+    <h5>Questions : </h5>
+    <form action="" method="post">
+        {% csrf_token %}
+        <!-- List out all the questions related to this form -->
+        {% for q in questions %}
+
+
+
+                <label for="question">{{q.questiontext}}</label>
+                <!-- Check if question is mcq type -->
+                {% if q.questiontype == "SingleSelect" %}
+
+                    <!-- Check if this is a mandatory field -->
+                    {% if q.required == True %}
+                        (required is true)
+                        <br><select id="Gender" name="Gender" required>
+                            {% for option in mcqoptions %}
+                                <option value="{{option}}">{{option}}</option>     
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        (required is false)
+                        <br><select id="Gender" name="Gender">
+                            <!-- iter through mcq choices here -->
+                            {% for option in mcqoptions %}
+                                <option value="{{option}}">{{option}}</option>     
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                
+                <!-- End of checking if this is mandatory field -->
+
+
+                {% else %}
+
+                    <!-- Check if this is a mandatory field -->
+                    {% if q.required == True %}
+                            (required is true)
+                            <br><input type={{q.questiontype}} name="{{q.questiontext}}" id="{{q.questiontext}}" required><br>
+                    {% else %}
+                            (required is false)
+                            <br><input type={{q.questiontype}} name="{{q.questiontext}}" id="{{q.questiontext}}"><br>
+                    {% endif %}
+                    <!-- End of checking if this is mandatory field -->
+                {% endif %}
+
+
+
+
+        <br>{% endfor %}
+        <!--  This is the end of listing out questions -->
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>

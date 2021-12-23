@@ -11,8 +11,11 @@
 <body>
     {% for f in allforms %}
     <a href="{% url 'formview' f.id %}"> Form : {{f.formname}}  created by : {{f.createdby}}</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="{% url 'formedit' f.id %}">Edit this form</a>
+    <br>
+    <br>
 
-    
     {% endfor %}
 </body>
 </html>

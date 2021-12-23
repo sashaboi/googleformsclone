@@ -20,4 +20,6 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('gforms.urls')),
+    path('', include('djoser.urls')),
+    path('', include('djoser.urls.authtoken')),
 ]
