@@ -21,13 +21,8 @@ def userdataapi(request,pk):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
-def deletequestion(request,pk):
-    Question.objects.get(id=pk).delete()
-    
-    return Response("done")
 
-# Fill form api data : this api takes in the formid, and give the form name, the questions in the form, and any mcq options (if available)
+# Fill form api data : this api takes in the formid, and gives the form name, the questions in the form, and any mcq options (if available)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def showform(request,pk):
@@ -48,6 +43,14 @@ def showform(request,pk):
         finaldata = formdata.data + questionsdata.data
     return Response(finaldata)
 
+#return question individual from ID
+@api_view(['GET'])
+def deletequestion(request,pk):
+    Question.objects.get(id=pk).delete()
+    
+    return Response("done")
+
+#this api edits questions when a question json is submitted
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def changequestion(request):
@@ -60,7 +63,7 @@ def changequestion(request):
     print('requestdata: ', request.data ,  'new question object: ', newquestion)
     return Response("done")
 
-
+#this api fills the forms. it takes answer json and creates answer object. 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def fillform(request,pk):
@@ -75,6 +78,7 @@ def fillform(request,pk):
     return Response("All good ")
     
 
+#this api is the view responses api. given form id, it returns the related questions, their individual responses
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])    
 def viewresponsesapi(request,pk):
@@ -131,13 +135,14 @@ def questionlistdetail(request,pk):
     serializer = Questionserializer(questions )
     return Response(serializer.data)
 
+#api testing
 @api_view(['GET'])
 def apiOverview(request):
     
     return Response("Hello World API is working")
 
 
-
+#create form api. This api takes in form data and creates forms, and question and mcq elements if applicable
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def formtakerapi(request):
@@ -176,6 +181,15 @@ def formtakerapi(request):
     else:
         print(serializer.errors)
     return Response(serializer.data)
+
+
+
+
+
+# Views below this are created for templates
+
+
+
 
 
 
